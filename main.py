@@ -15,7 +15,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
-import seaborn as sns
+import numpy as np
 
 #read csv, parse dates, set index to date column
 df = pd.read_csv("fcc-forum-pageviews.csv")
@@ -37,19 +37,17 @@ fig.savefig('line_plot.png')
 #bar plot data
 df_bar = df
 df_bar["year"] = df_bar.index.year
-df_bar["month"] = df_bar.index.month_name()
-df_bar = df_bar.groupby(["year", "month"], as_index=False, sort=False)["value"].mean()
-df_pivot = df_bar.pivot("year", "month", "value")
-#months = ["January", "February", "March", "April", "May", "June", "July", "August", "SEpt"]
-print (df_pivot.head(24))
+df_bar["month"] = df_bar.index.month
+df_group = df_bar.groupby(["year", "month"], as_index=False, sort=False)["value"].mean()
+df_pivot = df_group.pivot("year", "month", "value").fillna(0)
+months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+df_pivot.columns = months
+
+print (df_pivot.head())
 
 #bar plot
-fig,ax = plt.subplots()
-ax = df_pivot.plot(kind='bar', figsize = (16,9), xlabel = 'Year', ylabel = 'Average Page Views')
-#ax = df_bar.plot.bar(rot = 0)
-#df_pivot.plot(kind = "bar")
-#plt.xlabel("Years")
-#plt.ylabel("Average Page Views")
-#plt.title("Daily freeCodeCamp Forum Page Views 5/2016-12/2019")
-#plt.legend()
+ax = df_pivot.plot(kind='bar', figsize = (8,8), xlabel='Years', ylabel='Average Page Views')
+fig = ax.get_figure()
+plt.legend(title="Months")
+
 fig.savefig('bar_plot.png')
