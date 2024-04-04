@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
 import numpy as np
+import seaborn as sns
 
 #read csv, parse dates, set index to date column
 df = pd.read_csv("fcc-forum-pageviews.csv")
@@ -39,11 +40,11 @@ df_bar = df
 df_bar["year"] = df_bar.index.year
 df_bar["month"] = df_bar.index.month
 df_group = df_bar.groupby(["year", "month"], as_index=False, sort=False)["value"].mean()
-df_pivot = df_group.pivot("year", "month", "value").fillna(0)
+df_pivot = df_group.pivot("year", "month", "value")#.fillna(0)
 months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 df_pivot.columns = months
 
-print (df_pivot.head())
+#print (df_pivot.head())
 
 #bar plot
 ax = df_pivot.plot(kind='bar', figsize = (8,8), xlabel='Years', ylabel='Average Page Views')
@@ -51,3 +52,21 @@ fig = ax.get_figure()
 plt.legend(title="Months")
 
 fig.savefig('bar_plot.png')
+
+# Prepare data for box plots (this block of code is given)
+df_box = df.copy()
+df_box.reset_index(inplace=True)
+df_box['year'] = [d.year for d in df_box.date]
+df_box['month'] = [d.strftime('%b') for d in df_box.date]
+
+#print (df_box["value"].dtype)
+# Draw box plots (using Seaborn)
+fig, ax = plt.subplots(figsize=(20, 5))
+box_plot = sns.boxplot(data= df_box, x = "year", y = "value")
+
+
+# Save image and return fig (don't change this part)
+fig.savefig('box_plot.png')
+
+
+
