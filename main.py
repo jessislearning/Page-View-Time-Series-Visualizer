@@ -18,6 +18,11 @@ register_matplotlib_converters()
 import numpy as np
 import seaborn as sns
 
+np.float = float    
+np.int = int   #module 'numpy' has no attribute 'int'
+np.object = object    #module 'numpy' has no attribute 'object'
+np.bool = bool    #module 'numpy' has no attribute 'bool'
+
 #read csv, parse dates, set index to date column
 df = pd.read_csv("fcc-forum-pageviews.csv")
 df["date"] = pd.to_datetime(df["date"])
@@ -59,10 +64,23 @@ df_box.reset_index(inplace=True)
 df_box['year'] = [d.year for d in df_box.date]
 df_box['month'] = [d.strftime('%b') for d in df_box.date]
 
+months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
 #print (df_box["value"].dtype)
 # Draw box plots (using Seaborn)
-fig, ax = plt.subplots(figsize=(20, 5))
-box_plot = sns.boxplot(data= df_box, x = "year", y = "value")
+fig, axes = plt.subplots(1, 2, figsize=(20,8))
+
+#Subplot for yearly page views, left plot ax=axes[0]
+ax1 = sns.boxplot(data= df_box, x = "year", y = "value", ax=axes[0])
+ax1.set_xlabel("Years")
+ax1.set_ylabel("Page Views")
+ax1.set_title("Year-wise Box Plot (Trend)")
+
+#subplot for monthly page views, right plot ax=axes[1]
+ax2 = sns.boxplot(data=df_box, x="month", y="value", ax=axes[1], order=months)
+ax2.set_xlabel("Months")
+ax2.set_ylabel("Page Views")
+ax2.set_title("Month-wise Box Plot (Seasonality)")
 
 
 # Save image and return fig (don't change this part)

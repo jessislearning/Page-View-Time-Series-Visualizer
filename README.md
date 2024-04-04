@@ -8,3 +8,8 @@ From the CSV file, we use matplotlib and seaborn libraries to:
 
 1. Produce a line plot of the Daily freeCodeCamp Forum Page Views 5/2016-12/2019
 2. Create a bar plot of the average daily views each month, for every year available.
+
+
+
+Notes: I was encountering a numpy Attribute Error, to which a forum suggested the following "monkey patches"
+https://stackoverflow.com/questions/74844262/how-can-i-solve-error-module-numpy-has-no-attribute-float-in-python
