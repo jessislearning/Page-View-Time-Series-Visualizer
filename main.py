@@ -18,10 +18,10 @@ register_matplotlib_converters()
 import numpy as np
 import seaborn as sns
 
-np.float = float    
-np.int = int   #module 'numpy' has no attribute 'int'
-np.object = object    #module 'numpy' has no attribute 'object'
-np.bool = bool    #module 'numpy' has no attribute 'bool'
+#np.float = float    
+#np.int = int   #module 'numpy' has no attribute 'int'
+#np.object = object    #module 'numpy' has no attribute 'object'
+#np.bool = bool    #module 'numpy' has no attribute 'bool'
 
 #read csv, parse dates, set index to date column
 df = pd.read_csv("fcc-forum-pageviews.csv")
